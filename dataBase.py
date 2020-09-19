@@ -16,7 +16,43 @@ class BaseDatos:
                                   "Server="+self.__server+";"
                                   "DATABASE="+self.__name+";"
                                   "Trusted_Connection=yes;")
+	def cursor(self):
+		#Obtener Cursor
+		self.__cursor = self.__conexion.cursor()
 
+	def commit(self,query):
+		#Enviar Commit
+		esselect = query.count('SELECT')
+		if esselect == 0:
+			self.__conexion.commit()
+	def cerrar(self):
+		#Cerrar conexion
+		self.__conexion.close()
+	def obtener_datos(self,query):
+		esselect = query.count('SELECT')
+		if esselect > 0:
+			self.__datos = self.__cursor.fetchall()
+
+	def consulta(self,q,v=None):
+		if v:
+			self.__cursor.execute(q,v)
+		else:
+			self.__cursor.execute(q)
+	def ejecutar(self,query,values = None):
+		self.conectar()
+		self.cursor()
+		self.consulta(query,values)
+		self.commit(query)
+		self.obtener_datos(query)
+		self.cerrar()
+
+		return self.__datos
+
+
+
+
+
+"""Prueba conexión
 hola = BaseDatos('agendaDB')
 try:
 	hola.conectar()
@@ -24,4 +60,5 @@ try:
 
 except Exception as e:
 	print('No se pudo conectar')
-
+	print(e)
+"""
