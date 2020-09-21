@@ -50,10 +50,10 @@ class BaseDatos:
 
 
 
-"""
 
+"""
 #Prueba conexión
-prueba = BaseDatos('agendaDB')
+prueba = BaseDatos('AgendaDB2')
 try:
 	prueba.conectar()
 	print('Se conectó')

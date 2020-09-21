@@ -7,7 +7,11 @@ class Controlador:
 		self.Home()
 
 	def Home(self):
-		seleccion = self.__vistaAgenda.Inicio()
+		try:
+			seleccion = self.__vistaAgenda.Inicio()
+		except:
+			self.__vistaAgenda.Mensajes('\n-----Deben ser un valor numérico')
+			self.Home()
 		if seleccion == 1:
 			datos = self.__vistaAgenda.CrearAgenda()
 			propietario = Agenda(datos[0], datos[1])
@@ -17,7 +21,7 @@ class Controlador:
 				propietario.save()
 				self.Menu()
 			except:
-				self.__vistaAgenda.Mensajes('\nLa clave ya existe')
+				self.__vistaAgenda.Mensajes('\nEl correo ya existe')
 				self.Home()
 		elif seleccion == 2:
 			id = self.__vistaAgenda.LoginAgenda()
@@ -35,7 +39,11 @@ class Controlador:
 
 		if menu_select == 1:
 			lista = Contacto.Todos(id)
-			Vista.VerTodos(lista)
+			if lista:
+				Vista.VerTodos(lista)
+			else:
+				self.__vistaAgenda.Mensajes('\n----------------No hay contactos')
+
 			self.Menu()
 
 
@@ -52,7 +60,13 @@ class Controlador:
 					self.Menu()
 			elif op == 2:
 				datos = self.__vistaAgenda.PedirDatos('telefono')
-				contacto = Contacto.BuscarTelefono(int(datos['telefono']), id)
+				try:
+					contacto = Contacto.BuscarTelefono(int(datos['telefono']), id)
+
+				except:
+					self.__vistaAgenda.Mensajes('\n-----Deben ser un valor numérico')
+					self.Menu()
+
 				if contacto:
 					Vista.VerTodos(contacto)
 					self.Menu()
@@ -65,6 +79,9 @@ class Controlador:
 
 		elif menu_select == 3:
 			lista = Contacto.Todos(id)
+			if not lista:
+				self.__vistaAgenda.Mensajes('\n--------No hay contactos en la agenda\n')
+				self.Menu()
 			datoAModificar = self.__vistaAgenda.VistaModificar(lista)
 			contacto = lista[datoAModificar[0] - 1]
 			contacto = {'dni': contacto[0], 'nombre':contacto[2], 'telefono':contacto[3], 'email':contacto[4]}
@@ -89,12 +106,20 @@ class Controlador:
 				self.Menu()
 
 		elif menu_select == 4:
-			lista = self.__vistaAgenda.VistaEliminar(id)
+			lista = Contacto.Todos(id)
+			if not lista:
+				self.__vistaAgenda.Mensajes('\n--------No hay contactos en la agenda\n')
+				self.Menu()
+			Vista.VerTodos(lista)
+			op = self.__vistaAgenda.VistaEliminar(lista)
 
-			Contacto.Delete(lista[0])
+			Contacto.Delete(lista[op - 1][0])
 
-			self.__vistaAgenda.Mensajes('\n-------- Se eliminó correctamente--------')
+			self.__vistaAgenda.Mensajes('\n-------- Se eliminó correctamente--------\n')
+			lista = Contacto.Todos(id)
+			Vista.VerTodos(lista)
 			self.Menu()
+
 		elif menu_select == 5:
 			self.__vistaAgenda.Agregar()
 			datos = self.__vistaAgenda.PedirDatos('dni','nombre', 'telefono', 'email')
@@ -104,7 +129,7 @@ class Controlador:
 			
 			NewContacto.save()
 
-			self.__vistaAgenda.Mensajes('----------Se ha guardado con éxito')
+			self.__vistaAgenda.Mensajes('\n----------Se ha guardado con éxito')
 			self.Menu()
 
 		elif menu_select == 6:

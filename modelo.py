@@ -2,7 +2,7 @@ from dataBase import *
 
 
 class Agenda:
-	__DB = BaseDatos(name = 'agendaDB')
+	__DB = BaseDatos(name = 'AgendaDB2')
 	__tableName = 'agenda'
 
 	def __init__(self, id, propietario):
@@ -13,11 +13,11 @@ class Agenda:
 		query = "INSERT INTO " +Agenda.__tableName+ "(id_agenda, propietario) VALUES (?,?)"
 		values = (self.__id,self.__propietario)
 		x = Agenda.__DB.ejecutar(query,values)
-		print('guardado')#BORRAR LUEGO
+
 
 	@classmethod	
 	def login(cls, id):
-		query = f"SELECT * FROM {Agenda.__tableName} WHERE id_agenda = {id}"
+		query = f"SELECT * FROM {Agenda.__tableName} WHERE id_agenda = '{id}'"
 		return Agenda.__DB.ejecutar(query)
 
 
@@ -27,15 +27,14 @@ class Agenda:
 		return Agenda.__DB.ejecutar(query)
 
 	def __str__(self):
-		return f'''Nombre: {self.__propietario}
-					ID: {__id}''' #Poner email 
+		return f'''Nombre: {self.__propietario} --- Email: {self.__id}'''
 
 
 
 
 
 class Contacto:
-	__DB = BaseDatos(name = 'agendaDB')
+	__DB = BaseDatos(name = 'AgendaDB2')
 	__tableName = 'contacto'
 
 	def __init__(self, dni, id, nombre, telefono = None, email=None):
@@ -44,25 +43,24 @@ class Contacto:
 		self.__nombre = nombre
 		self.__telefono = telefono
 		self.__email = email
-
 	def save(self):
 		query = "INSERT INTO " +Contacto.__tableName+ "(dni, id_agenda, nombre, telefono, email) VALUES (?,?,?,?,?)"
 		values = (self.__dni, self.__id,self.__nombre,self.__telefono,self.__email)
 		x = Contacto.__DB.ejecutar(query,values)
 
 	@classmethod
-	def Todos(cls, id_agenda):
-		query = f"SELECT * FROM {Contacto.__tableName} WHERE id_agenda = {id_agenda}"#MODIFICAR
+	def Todos(cls, id):
+		query = f"SELECT * FROM {Contacto.__tableName} WHERE id_agenda = '{id}'"
 		return Contacto.__DB.ejecutar(query)
 
 
 	@classmethod
-	def BuscarTelefono(cls, telefono, id_agenda):
-		query = F"SELECT * FROM {Contacto.__tableName} WHERE telefono = {telefono} and id_agenda = {id_agenda}"#MODIFICAR 
+	def BuscarTelefono(cls, telefono, id):
+		query = F"SELECT * FROM {Contacto.__tableName} WHERE telefono = {telefono} and id_agenda = '{id}'"
 		return Contacto.__DB.ejecutar(query)
 	@classmethod
-	def BuscarNombre(cls, nombre, id_agenda):
-		query = F"SELECT * FROM {Contacto.__tableName} WHERE nombre = '{nombre}' and id_agenda = {id_agenda}"#MODIFICAR 
+	def BuscarNombre(cls, nombre, id):
+		query = F"SELECT * FROM {Contacto.__tableName} WHERE nombre = '{nombre}' and id_agenda = '{id}'"
 		return Contacto.__DB.ejecutar(query)
 
 	@classmethod
@@ -84,3 +82,6 @@ class Contacto:
 				   TELEFONO: {self.__telefono}
 				   Email: {self.__email}'''
 
+
+
+				   

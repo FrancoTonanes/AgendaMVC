@@ -33,11 +33,11 @@ class Vista:
 	def CrearAgenda(Self):
 		print("--------------Crear Agenda----------------")
 		propietario = input('Ingrese su nombre:\t')
-		id = int(input('Ingrese su clave:\t'))#MODIFICAR POR EMAIL
+		id = input('Ingrese su email:\t')
 		return (id, propietario)
 	def LoginAgenda(self):
 		print("--------------Inicie Sesión----------------")
-		id = int(input('Ingrese su clave:\t'))#MODIFICAR POR EMAIL
+		id = input('Ingrese su email:\t')
 		return id
 	@classmethod
 	def VerTodos(cls, tuppla): #MODIFICAR A LA NUEVA VERSIÓN
@@ -81,12 +81,12 @@ class Vista:
 			salida[r] = input(f"Ingrese {r}: ")
 		return salida
 
-	def VistaEliminar(self, id):
+	def VistaEliminar(self,lista):
 		print('\n======= ELIMINAR =======\n')
-		lista = Contacto.Todos(id)
-		Vista.VerTodos(lista)
+
+		
 		op = int(input('\nIngrese el ID del contacto a eliminar:\t'))
-		return lista[op - 1]
+		return op
 
 	def Agregar(self):
 		print('\n========== AGREGAR ==========\n')
