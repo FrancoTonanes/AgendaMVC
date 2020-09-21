@@ -17,7 +17,7 @@ class Agenda:
 
 	@classmethod	
 	def login(cls, id):
-		query = F"SELECT * FROM {Agenda.__tableName} WHERE id_agenda = {id}"
+		query = f"SELECT * FROM {Agenda.__tableName} WHERE id_agenda = {id}"
 		return Agenda.__DB.ejecutar(query)
 
 
@@ -51,14 +51,31 @@ class Contacto:
 		x = Contacto.__DB.ejecutar(query,values)
 
 	@classmethod
-	def Todos(cls):
-		query = "SELECT * FROM " + Contacto.__tableName
+	def Todos(cls, id_agenda):
+		query = f"SELECT * FROM {Contacto.__tableName} WHERE id_agenda = {id_agenda}"#MODIFICAR
 		return Contacto.__DB.ejecutar(query)
 
 
 	@classmethod
-	def buscar(cls, dni):
-		query = F"SELECT * FROM {Contacto.__tableName} WHERE dni = {dni}"
+	def BuscarTelefono(cls, telefono, id_agenda):
+		query = F"SELECT * FROM {Contacto.__tableName} WHERE telefono = {telefono} and id_agenda = {id_agenda}"#MODIFICAR 
+		return Contacto.__DB.ejecutar(query)
+	@classmethod
+	def BuscarNombre(cls, nombre, id_agenda):
+		query = F"SELECT * FROM {Contacto.__tableName} WHERE nombre = '{nombre}' and id_agenda = {id_agenda}"#MODIFICAR 
+		return Contacto.__DB.ejecutar(query)
+
+	@classmethod
+	def Modificar(cls, dni, nombre, telefono): 
+		query = f"UPDATE {Contacto.__tableName} SET nombre='{nombre}', telefono = {telefono} WHERE dni = {dni}"
+		return Contacto.__DB.ejecutar(query)
+	@classmethod
+	def ModificarEmail(cls, dni, email):
+		query = f"UPDATE {Contacto.__tableName} SET email='{email}' WHERE dni = {dni}"
+		return Contacto.__DB.ejecutar(query)
+	@classmethod
+	def Delete(cls, dni):
+		query = f"DELETE FROM {Contacto.__tableName} WHERE dni = {dni}"
 		return Contacto.__DB.ejecutar(query)
 
 	def __str__(self):
@@ -66,6 +83,4 @@ class Contacto:
 				   NOMBRE: {self.__nombre}
 				   TELEFONO: {self.__telefono}
 				   Email: {self.__email}'''
-
-
 
